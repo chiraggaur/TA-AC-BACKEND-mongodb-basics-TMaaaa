@@ -22,3 +22,5 @@ Write code to:-
 
 - find a single document using name
   //db.himalayas.find({name:'abhshiek'})
+
+// re pushed
