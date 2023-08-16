@@ -3,7 +3,10 @@ writeCode
 Write code to execute below expressions.
 
 1. Create a database named `blog`.
+   // use blog
 2. Create a collection called 'articles'.
+   // db.createCollection('articles')
+
 3. Insert multiple documents(at least 3) into articles. It should have fields
 
 - title as string
@@ -32,24 +35,68 @@ Write code to execute below expressions.
 }
 ```
 
+// db.articles.insertMany(article);
+
 4. Find all the articles using `db.COLLECTION_NAME.find()`
+   // db.articles.find()
+
 5. Find a document using \_id field.
+   // db.articles.find({\_id:'123'})
+
 6. 1. Find documents using title
+      // db.articles.find({title:'art2'})
+
 7. 2. Find documents using author's name field.
+      // db.articles.find({'author.name' : "mann bhel"})
+
 8. Find document using a specific tag.
+   //db.articles.find({tags:['js','css']})
 
 9. Update title of a document using its \_id field.
+
+//db.articles.updateOne(
+{ \_id: '123' },
+{ $set: { title: 'updated title'} },
+{ upsert: true }
+)
+// upset will check if id matches otherwise it will add document to collection
+
 10. Update a author's name using article's title.
+    //db.articles.updateOne( { title: 'updated title 2' }, { $set: { 'author.name': 'updated author' } }, { upsert: true } )
+
 11. rename details field to description from all articles in articles collection.
+    //db.articles.updateMany({}, {$rename:{"details":"description"}}, false, true)
+
 12. Add additional tag in a specific document.
+    //db.articles.updateOne(
+    { \_id: '123' },
+    { $push: { tags: 'mongo'} },
+    { upsert: true }
+    )
 
 13. Update an article's title using $set and without $set.
 
+// db.articles.updateOne(
+{ \_id: '123' },
+{ title: 'updated title'},
+{ upsert: true }
+)
+
 - Write the differences here ?
+
+// it should change and update the specific title in case of set and in other case it will remove all other keys and pass the only key ;
 
 13. find an article using title and increment it's auhtor's age by 5.
 
+db.articles.updateOne(
+{ title: 'art4' },
+{ $set: {'author.age': '45'} },
+{ upsert: true }
+)
+
 14. Delete a document using \_id field with `db.COLLECTION_NAME.remove()`.
+
+// db.articles.remove({\_id:'123'})
 
 // Sample data
 
@@ -168,6 +215,14 @@ db.users.insertMany([
 Insert above data into database to perform below queries:-
 
 - Find all males who play cricket.
+  //db.users.find({gender:'Male',sports:'cricket'})
+
 - Update user with extra golf field in sports array whose name is "Steve Ortega".
+  //db.users.updateOne({name:"Steve Ortega"},{$push:{sports:'golf'}},{upsert:true})
+
 - Find all users who play either 'football' or 'cricket'.
+  //db.users.find({sports:{$in:['football','cricket']}})
+
 - Find all users whose name includes 'ri' in their name.
+
+// db.users.find({"name" : {$regex : "ri"}});
